@@ -29,18 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function createPlatforms() {
     for (let i = 0; i < platformCount; i++) {
-      let platformGap = 600 / platformCount;
+      let platGap = 600 / platformCount;
       let newPlatBottom = 100 + i * platGap;
-      let newPlatform = new platformCount(newPlatBottom);
+      let newPlatform = new Platform(newPlatBottom);
     }
   }
 
   function start() {
     if (!isGameOver) {
-      createDoodler;
+      createDoodler();
+      createPlatforms();
     }
   }
 
   // planning to attach a button to start game
   //   createDoodler();
+  start();
 });
