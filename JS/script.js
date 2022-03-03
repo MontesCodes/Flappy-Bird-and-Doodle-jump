@@ -3,13 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.grid');
   const doodler = document.createElement('div');
   let doodlerLeftSpace = 50;
-  let doodlerBottomSpace = 150;
+  let startPoint = 150;
+  let doodlerBottomSpace = startPoint;
   let isGameOver = false;
   let platformCount = 5;
   let platforms = [];
   let upTimerId;
   let downTimerId;
   let isJumping = true;
+  let isGoingLeft = false;
+  let isGoingRight = false;
+  let leftTimerId;
+  let rightTimerId;
 
   function createDoodler() {
     grid.appendChild(doodler);
@@ -59,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     upTimerId = setInterval(function () {
       doodlerBottomSpace += 20;
       doodler.style.bottom = doodlerBottomSpace + 'px';
-      if (doodlerBottomSpace > 350) {
+      if (doodlerBottomSpace > startPoint + 200) {
         fall();
       }
     }, 30);
@@ -74,6 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (doodlerBottomSpace <= 0) {
         gameOver();
       }
+      platforms.forEach(platform => {
+        if (
+          doodlerBottomSpace >= platform.bottom &&
+          doodlerBottomSpace <= platform.bottom + 15 &&
+          doodlerLeftSpace + 60 >= platform.left &&
+          doodlerLeftSpace <= platform.left + 85 &&
+          !isJumping
+        ) {
+          console.log('landed');
+          startPoint = doodlerBottomSpace;
+          jump();
+        }
+      });
     }, 30);
   }
 
@@ -87,11 +105,21 @@ document.addEventListener('DOMContentLoaded', () => {
   function control() {
     if (e.key === 'ArrowLeft') {
       // Move left
+      moveLeft();
     } else if (e.key === 'ArrowRight') {
       //Move right
+      // moveRight();
     } else if (e.key === 'ArrowUp') {
       // Move straight
+      // moveStraight();
     }
+  }
+  function moveLeft() {
+    isGoingLeft = true;
+    leftTimerId = setInterval(function () {
+      doodlerLeftSpace -= 5;
+      doodler.style.left = doodlerLeftSpace + 'px';
+    }, 30);
   }
 
   function start() {
@@ -100,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
       createDoodler();
       setInterval(movePlatforms, 30);
       jump();
+      document.addEventListener('keyup', control);
     }
   }
 
