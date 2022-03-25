@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         visual.style.bottom = platform.bottom + 'px';
 
         if (platform.bottom < 10) {
-          let firstPlatform = platform[0].visual;
+          let firstPlatform = platforms[0].visual;
           firstPlatform.classList.remove('platform');
           platforms.shift();
           console.log(platforms);
